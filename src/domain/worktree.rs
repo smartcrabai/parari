@@ -193,7 +193,8 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_worktree_manager_creation() -> std::result::Result<(), Box<dyn std::error::Error>> {
+    async fn test_worktree_manager_creation() -> std::result::Result<(), Box<dyn std::error::Error>>
+    {
         let cwd = std::env::current_dir()?;
         let manager = WorktreeManager::new(&cwd).await;
         assert!(manager.is_ok());

@@ -8,14 +8,18 @@ use parari::domain::{TaskRunner, apply_result};
 use parari::executor::mock::MockExecutor;
 use parari::executor::traits::Executor;
 
-fn unique_temp_dir(name: &str) -> std::result::Result<std::path::PathBuf, Box<dyn std::error::Error>> {
+fn unique_temp_dir(
+    name: &str,
+) -> std::result::Result<std::path::PathBuf, Box<dyn std::error::Error>> {
     let timestamp = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)?
         .as_nanos();
     Ok(std::env::temp_dir().join(format!("parari_test_{name}_{timestamp}")))
 }
 
-async fn setup_git_repo(path: &std::path::Path) -> std::result::Result<(), Box<dyn std::error::Error>> {
+async fn setup_git_repo(
+    path: &std::path::Path,
+) -> std::result::Result<(), Box<dyn std::error::Error>> {
     tokio::fs::create_dir_all(path).await?;
 
     tokio::process::Command::new("git")
@@ -37,8 +41,7 @@ async fn setup_git_repo(path: &std::path::Path) -> std::result::Result<(), Box<d
         .output()
         .await?;
 
-    tokio::fs::write(path.join("README.md"), "# Test Project\n")
-        .await?;
+    tokio::fs::write(path.join("README.md"), "# Test Project\n").await?;
 
     tokio::process::Command::new("git")
         .args(["add", "."])
@@ -61,7 +64,8 @@ async fn setup_git_repo(path: &std::path::Path) -> std::result::Result<(), Box<d
 /// 3. Select a result and apply it
 /// 4. Verify the changes are applied
 #[tokio::test]
-async fn test_full_workflow_with_mock_executors() -> std::result::Result<(), Box<dyn std::error::Error>> {
+async fn test_full_workflow_with_mock_executors()
+-> std::result::Result<(), Box<dyn std::error::Error>> {
     let temp_dir = unique_temp_dir("full_workflow")?;
     if temp_dir.exists() {
         tokio::fs::remove_dir_all(&temp_dir).await?;
@@ -94,9 +98,7 @@ async fn test_full_workflow_with_mock_executors() -> std::result::Result<(), Box
 
     // Create task runner and run
     let mut runner = TaskRunner::new(&temp_dir).await?;
-    let results = runner
-        .run("Create a Rust project", executors)
-        .await?;
+    let results = runner.run("Create a Rust project", executors).await?;
 
     // Verify we got results from both executors
     assert_eq!(results.len(), 2);
@@ -108,24 +110,22 @@ async fn test_full_workflow_with_mock_executors() -> std::result::Result<(), Box
         .ok_or("Claude result not found")?;
 
     // Verify Claude's worktree has the expected files
-    let claude_main = tokio::fs::read_to_string(claude_result.worktree_path.join("src/main.rs"))
-        .await?;
+    let claude_main =
+        tokio::fs::read_to_string(claude_result.worktree_path.join("src/main.rs")).await?;
     assert!(claude_main.contains("Hello from Claude!"));
 
-    let claude_lib = tokio::fs::read_to_string(claude_result.worktree_path.join("src/lib.rs"))
-        .await?;
+    let claude_lib =
+        tokio::fs::read_to_string(claude_result.worktree_path.join("src/lib.rs")).await?;
     assert!(claude_lib.contains("claude_helper"));
 
     // Apply Claude's result to the original directory
     apply_result(claude_result, &temp_dir).await?;
 
     // Verify the changes were applied
-    let applied_main = tokio::fs::read_to_string(temp_dir.join("src/main.rs"))
-        .await?;
+    let applied_main = tokio::fs::read_to_string(temp_dir.join("src/main.rs")).await?;
     assert!(applied_main.contains("Hello from Claude!"));
 
-    let applied_lib = tokio::fs::read_to_string(temp_dir.join("src/lib.rs"))
-        .await?;
+    let applied_lib = tokio::fs::read_to_string(temp_dir.join("src/lib.rs")).await?;
     assert!(applied_lib.contains("claude_helper"));
 
     // Cleanup
@@ -185,8 +185,7 @@ async fn test_change_summary() -> std::result::Result<(), Box<dyn std::error::Er
     setup_git_repo(&temp_dir).await?;
 
     // Add an existing file
-    tokio::fs::write(temp_dir.join("existing.txt"), "existing content\n")
-        .await?;
+    tokio::fs::write(temp_dir.join("existing.txt"), "existing content\n").await?;
 
     tokio::process::Command::new("git")
         .args(["add", "."])

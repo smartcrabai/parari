@@ -101,10 +101,7 @@ impl TaskRunner {
             .iter()
             .filter_map(|executor| {
                 let executor = Arc::clone(executor);
-                let worktree = self
-                    .worktree_manager
-                    .get_worktree(executor.name())?
-                    .clone();
+                let worktree = self.worktree_manager.get_worktree(executor.name())?.clone();
                 let prompt = prompt.to_string();
                 let repo_path = repo_path.clone();
                 let progress = progress.clone();
@@ -121,10 +118,9 @@ impl TaskRunner {
 
                     if let Ok(execution) = result {
                         // Get change summary
-                        let change_summary =
-                            git::get_change_summary(&repo_path, &worktree.path)
-                                .await
-                                .ok();
+                        let change_summary = git::get_change_summary(&repo_path, &worktree.path)
+                            .await
+                            .ok();
 
                         // Update progress based on execution success
                         if let Some(ref p) = progress {
@@ -185,7 +181,8 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_task_runner_no_executors() -> std::result::Result<(), Box<dyn std::error::Error>> {
+    async fn test_task_runner_no_executors() -> std::result::Result<(), Box<dyn std::error::Error>>
+    {
         let cwd = std::env::current_dir()?;
         let mut runner = TaskRunner::new(&cwd).await?;
 

@@ -115,12 +115,14 @@ pub async fn execute_with_ordered_output(
 
     let mut child = cmd.spawn()?;
 
-    let stdout = child.stdout.take().ok_or_else(|| {
-        std::io::Error::other("stdout not available")
-    })?;
-    let stderr = child.stderr.take().ok_or_else(|| {
-        std::io::Error::other("stderr not available")
-    })?;
+    let stdout = child
+        .stdout
+        .take()
+        .ok_or_else(|| std::io::Error::other("stdout not available"))?;
+    let stderr = child
+        .stderr
+        .take()
+        .ok_or_else(|| std::io::Error::other("stderr not available"))?;
 
     let mut stdout_reader = BufReader::new(stdout).lines();
     let mut stderr_reader = BufReader::new(stderr).lines();

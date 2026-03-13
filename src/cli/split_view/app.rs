@@ -279,7 +279,11 @@ impl App {
         }
     }
 
-    fn handle_normal_key(&mut self, key: ratatui::crossterm::event::KeyEvent, viewport_height: u16) {
+    fn handle_normal_key(
+        &mut self,
+        key: ratatui::crossterm::event::KeyEvent,
+        viewport_height: u16,
+    ) {
         match self.focused_panel {
             FocusedPanel::Models => self.handle_models_panel_key(key),
             FocusedPanel::Details => self.handle_details_panel_key(key, viewport_height),
@@ -322,24 +326,16 @@ impl App {
             // Vim-style scrolling
             KeyCode::Char('j') | KeyCode::Down => self.scroll_down(1),
             KeyCode::Char('k') | KeyCode::Up => self.scroll_up(1),
-            KeyCode::Char('d')
-                if key.modifiers.contains(event::KeyModifiers::CONTROL) =>
-            {
+            KeyCode::Char('d') if key.modifiers.contains(event::KeyModifiers::CONTROL) => {
                 self.half_page_down(viewport_height);
             }
-            KeyCode::Char('u')
-                if key.modifiers.contains(event::KeyModifiers::CONTROL) =>
-            {
+            KeyCode::Char('u') if key.modifiers.contains(event::KeyModifiers::CONTROL) => {
                 self.half_page_up(viewport_height);
             }
-            KeyCode::Char('f')
-                if key.modifiers.contains(event::KeyModifiers::CONTROL) =>
-            {
+            KeyCode::Char('f') if key.modifiers.contains(event::KeyModifiers::CONTROL) => {
                 self.scroll_down(viewport_height);
             }
-            KeyCode::Char('b')
-                if key.modifiers.contains(event::KeyModifiers::CONTROL) =>
-            {
+            KeyCode::Char('b') if key.modifiers.contains(event::KeyModifiers::CONTROL) => {
                 self.scroll_up(viewport_height);
             }
             KeyCode::Char('g') | KeyCode::Home => self.scroll_to_top(),
@@ -361,9 +357,7 @@ impl App {
             KeyCode::Char('l' | 'L') => {
                 self.set_mode(ViewMode::Log);
             }
-            KeyCode::Char('d')
-                if !key.modifiers.contains(event::KeyModifiers::CONTROL) =>
-            {
+            KeyCode::Char('d') if !key.modifiers.contains(event::KeyModifiers::CONTROL) => {
                 self.set_mode(ViewMode::Diff);
             }
             KeyCode::Char('D') => self.set_mode(ViewMode::Diff),

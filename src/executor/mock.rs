@@ -79,7 +79,9 @@ impl MockExecutor {
     /// Panics if the internal mutex is poisoned.
     #[must_use]
     pub fn with_response(self, result: ExecutionResult) -> Self {
-        if let Ok(mut r) = self.responses.lock() { r.push(result); }
+        if let Ok(mut r) = self.responses.lock() {
+            r.push(result);
+        }
         self
     }
 
@@ -104,7 +106,9 @@ impl MockExecutor {
     /// Panics if the internal mutex is poisoned.
     #[must_use]
     pub fn with_file_action(self, action: FileAction) -> Self {
-        if let Ok(mut fa) = self.file_actions.lock() { fa.push(action); }
+        if let Ok(mut fa) = self.file_actions.lock() {
+            fa.push(action);
+        }
         self
     }
 
@@ -151,12 +155,17 @@ impl MockExecutor {
 
     /// Clear all recorded calls
     pub fn clear_calls(&self) {
-        if let Ok(mut c) = self.calls.lock() { c.clear(); }
+        if let Ok(mut c) = self.calls.lock() {
+            c.clear();
+        }
     }
 
     /// Perform the configured file actions in the given directory
     async fn perform_file_actions(&self, working_dir: &Path) -> Result<()> {
-        let actions = self.file_actions.lock().map_or_else(|_| Vec::new(), |fa| fa.clone());
+        let actions = self
+            .file_actions
+            .lock()
+            .map_or_else(|_| Vec::new(), |fa| fa.clone());
 
         for action in actions {
             match action {

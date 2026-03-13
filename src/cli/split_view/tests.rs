@@ -222,8 +222,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -238,8 +237,7 @@ mod snapshot_tests {
         let content = "+++ b/src/main.rs\n--- a/src/main.rs\n@@ -1,3 +1,5 @@\n fn main() {\n+    println!(\"Hello\");\n     run();\n }";
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, content))?;
+        terminal.draw(|frame| render(frame, &mut app, content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -256,8 +254,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -275,8 +272,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -293,8 +289,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -312,8 +307,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -325,8 +319,7 @@ mod snapshot_tests {
         let content = "";
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, content))?;
+        terminal.draw(|frame| render(frame, &mut app, content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())
@@ -343,8 +336,7 @@ mod snapshot_tests {
             .unwrap_or_default();
 
         let mut terminal = Terminal::new(TestBackend::new(100, 30))?;
-        terminal
-            .draw(|frame| render(frame, &mut app, &content))?;
+        terminal.draw(|frame| render(frame, &mut app, &content))?;
 
         assert_snapshot!(terminal.backend());
         Ok(())

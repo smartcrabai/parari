@@ -148,10 +148,7 @@ fn render_search_bar(frame: &mut Frame, app: &App, area: ratatui::layout::Rect) 
 
     // Set cursor position
     let query_len = u16::try_from(app.search_query.len()).unwrap_or(u16::MAX);
-    frame.set_cursor_position(Position::new(
-        area.x + 1 + query_len,
-        area.y,
-    ));
+    frame.set_cursor_position(Position::new(area.x + 1 + query_len, area.y));
 }
 
 fn render_footer(frame: &mut Frame, app: &App, area: ratatui::layout::Rect) {

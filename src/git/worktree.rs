@@ -64,20 +64,13 @@ pub async fn create_worktree(repo_path: &Path, executor_name: &str) -> Result<Wo
     // Ensure worktrees directory exists
     tokio::fs::create_dir_all(config::worktrees_dir()).await?;
 
-    let worktree_path_str = worktree_path
-        .to_str()
-        .ok_or_else(|| Error::GitCommand {
-            message: "worktree path contains invalid UTF-8".to_string(),
-        })?;
+    let worktree_path_str = worktree_path.to_str().ok_or_else(|| Error::GitCommand {
+        message: "worktree path contains invalid UTF-8".to_string(),
+    })?;
 
     // Create the worktree
     let output = Command::new("git")
-        .args([
-            "worktree",
-            "add",
-            "--detach",
-            worktree_path_str,
-        ])
+        .args(["worktree", "add", "--detach", worktree_path_str])
         .current_dir(repo_path)
         .output()
         .await?;
@@ -211,12 +204,7 @@ pub async fn remove_worktree(repo_path: &Path, worktree_path: &Path) -> Result<(
     // First, try to remove with --force
     let worktree_path_str = worktree_path.to_str().unwrap_or("");
     let output = Command::new("git")
-        .args([
-            "worktree",
-            "remove",
-            "--force",
-            worktree_path_str,
-        ])
+        .args(["worktree", "remove", "--force", worktree_path_str])
         .current_dir(repo_path)
         .output()
         .await?;

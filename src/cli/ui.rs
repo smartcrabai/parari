@@ -143,7 +143,7 @@ pub fn show_applying_message(executor_name: &str) {
     println!();
     println!(
         "  {} {} Applying changes from {}...",
-        style("🔧").bold(),
+        style("[>>]").bold(),
         agent_style.emoji,
         style(executor_name.to_uppercase()).bold().cyan()
     );
@@ -152,33 +152,33 @@ pub fn show_applying_message(executor_name: &str) {
 /// Display a success message
 pub fn show_success_message() {
     println!();
-    println!("{}", style("━".repeat(50)).green());
+    println!("{}", style("=".repeat(50)).green());
     println!(
         "  {} {}",
-        style("✅").bold(),
+        style("[ok]").bold(),
         style("Changes applied successfully!").bold().green()
     );
-    println!("{}", style("━".repeat(50)).green());
+    println!("{}", style("=".repeat(50)).green());
     println!();
 }
 
 /// Display an error message
 pub fn show_error(error: &Error) {
     eprintln!();
-    eprintln!("{}", style("━".repeat(50)).red());
+    eprintln!("{}", style("=".repeat(50)).red());
     eprintln!(
         "  {} {} {}",
-        style("❌").bold(),
+        style("[!!]").bold(),
         style("Error:").bold().red(),
         style(error).red()
     );
-    eprintln!("{}", style("━".repeat(50)).red());
+    eprintln!("{}", style("=".repeat(50)).red());
     eprintln!();
 }
 
 /// Display progress message
 pub fn show_progress(message: &str) {
-    println!("  {} {}", style("ℹ️").bold(), style(message).cyan());
+    println!("  {} {}", style("[i]").bold(), style(message).cyan());
 }
 
 /// Display waiting message while executors are running

@@ -66,7 +66,7 @@ fn render_model_list(frame: &mut Frame, app: &mut App, area: ratatui::layout::Re
     };
 
     let title = if is_focused {
-        "▶ Models "
+        "> Models "
     } else {
         " Models "
     };
@@ -79,7 +79,7 @@ fn render_model_list(frame: &mut Frame, app: &mut App, area: ratatui::layout::Re
                 .bg(Color::Cyan)
                 .add_modifier(Modifier::BOLD),
         )
-        .highlight_symbol("▶ ");
+        .highlight_symbol("> ");
 
     frame.render_stateful_widget(list, area, &mut app.list_state);
 }
@@ -98,7 +98,7 @@ fn render_detail_panel(frame: &mut Frame, app: &App, area: ratatui::layout::Rect
     };
 
     let title = if is_focused {
-        format!("▶ {} ", mode_name)
+        format!("> {} ", mode_name)
     } else {
         format!(" {} ", mode_name)
     };

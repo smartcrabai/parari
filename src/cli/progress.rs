@@ -17,19 +17,19 @@ impl AgentStyle {
     pub fn for_agent(name: &str) -> Self {
         match name.to_lowercase().as_str() {
             "claude" => AgentStyle {
-                emoji: "🤖",
+                emoji: "[claude]",
                 color: "magenta",
             },
             "gemini" => AgentStyle {
-                emoji: "💎",
+                emoji: "[gemini]",
                 color: "cyan",
             },
             "codex" => AgentStyle {
-                emoji: "🧠",
+                emoji: "[codex]",
                 color: "green",
             },
             _ => AgentStyle {
-                emoji: "⚡",
+                emoji: "[agent]",
                 color: "yellow",
             },
         }
@@ -48,10 +48,10 @@ pub enum AgentStatus {
 impl AgentStatus {
     fn emoji(&self) -> &'static str {
         match self {
-            AgentStatus::Pending => "⏳",
-            AgentStatus::Running => "🔄",
-            AgentStatus::Completed => "✅",
-            AgentStatus::Failed => "❌",
+            AgentStatus::Pending => "[..]",
+            AgentStatus::Running => "[>>]",
+            AgentStatus::Completed => "[ok]",
+            AgentStatus::Failed => "[!!]",
         }
     }
 }
@@ -72,7 +72,7 @@ impl ProgressTracker {
         // Create spinner style with custom characters
         let spinner_style = ProgressStyle::with_template("{spinner:.bold} {prefix:.bold} {msg}")
             .unwrap()
-            .tick_chars("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏");
+            .tick_chars("|/-\\");
 
         for name in agent_names {
             let agent_style = AgentStyle::for_agent(name);
@@ -119,7 +119,7 @@ impl ProgressTracker {
     /// Update with a custom message
     pub fn update_message(&self, agent_name: &str, message: &str) {
         if let Some(pb) = self.bars.get(agent_name) {
-            pb.set_message(format!("🔄 {}", message));
+            pb.set_message(format!("[>>] {}", message));
         }
     }
 
@@ -147,13 +147,13 @@ pub fn create_shared_tracker(agent_names: &[&str]) -> SharedProgressTracker {
 /// Display header with colorful styling
 pub fn display_header(agent_names: &[&str]) {
     println!();
-    println!("{}", style("━".repeat(50)).cyan());
+    println!("{}", style("=".repeat(50)).cyan());
     println!(
         "  {} {}",
-        style("🚀").bold(),
+        style("[>>]").bold(),
         style("Running AI Agents in Parallel").bold().cyan()
     );
-    println!("{}", style("━".repeat(50)).cyan());
+    println!("{}", style("=".repeat(50)).cyan());
     println!();
 
     for name in agent_names {
@@ -171,12 +171,12 @@ pub fn display_header(agent_names: &[&str]) {
 /// Display completion summary
 pub fn display_completion_summary(completed: &[&str], failed: &[&str]) {
     println!();
-    println!("{}", style("━".repeat(50)).cyan());
+    println!("{}", style("=".repeat(50)).cyan());
 
     if !completed.is_empty() {
         println!(
             "  {} {} agent(s) completed successfully",
-            style("✅").green(),
+            style("[ok]").green(),
             style(completed.len()).green().bold()
         );
         for name in completed {
@@ -188,7 +188,7 @@ pub fn display_completion_summary(completed: &[&str], failed: &[&str]) {
     if !failed.is_empty() {
         println!(
             "  {} {} agent(s) failed",
-            style("❌").red(),
+            style("[!!]").red(),
             style(failed.len()).red().bold()
         );
         for name in failed {
@@ -197,7 +197,7 @@ pub fn display_completion_summary(completed: &[&str], failed: &[&str]) {
         }
     }
 
-    println!("{}", style("━".repeat(50)).cyan());
+    println!("{}", style("=".repeat(50)).cyan());
     println!();
 }
 
@@ -208,26 +208,26 @@ mod tests {
     #[test]
     fn test_agent_style_known_agents() {
         let claude = AgentStyle::for_agent("claude");
-        assert_eq!(claude.emoji, "🤖");
+        assert_eq!(claude.emoji, "[claude]");
 
         let gemini = AgentStyle::for_agent("gemini");
-        assert_eq!(gemini.emoji, "💎");
+        assert_eq!(gemini.emoji, "[gemini]");
 
         let codex = AgentStyle::for_agent("codex");
-        assert_eq!(codex.emoji, "🧠");
+        assert_eq!(codex.emoji, "[codex]");
     }
 
     #[test]
     fn test_agent_style_unknown_agent() {
         let unknown = AgentStyle::for_agent("unknown_agent");
-        assert_eq!(unknown.emoji, "⚡");
+        assert_eq!(unknown.emoji, "[agent]");
     }
 
     #[test]
     fn test_agent_status_emoji() {
-        assert_eq!(AgentStatus::Pending.emoji(), "⏳");
-        assert_eq!(AgentStatus::Running.emoji(), "🔄");
-        assert_eq!(AgentStatus::Completed.emoji(), "✅");
-        assert_eq!(AgentStatus::Failed.emoji(), "❌");
+        assert_eq!(AgentStatus::Pending.emoji(), "[..]");
+        assert_eq!(AgentStatus::Running.emoji(), "[>>]");
+        assert_eq!(AgentStatus::Completed.emoji(), "[ok]");
+        assert_eq!(AgentStatus::Failed.emoji(), "[!!]");
     }
 }

@@ -53,8 +53,7 @@ pub fn select_result_split_view(result_infos: &[ResultInfo]) -> Result<usize> {
 
         let viewport_height = terminal
             .size()
-            .map(|s| s.height.saturating_sub(4))
-            .unwrap_or(20);
+            .map_or(20, |s| s.height.saturating_sub(4));
 
         terminal
             .draw(|frame| render(frame, &mut app, &cached_content))

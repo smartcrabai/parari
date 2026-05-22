@@ -70,9 +70,7 @@ impl App {
 
     pub fn previous_model(&mut self) {
         let i = match self.list_state.selected() {
-            Some(i) if i > 0 => {
-                i - 1
-            }
+            Some(i) if i > 0 => i - 1,
             _ => 0,
         };
         self.list_state.select(Some(i));

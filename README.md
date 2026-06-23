@@ -1,5 +1,8 @@
 # parari
 
+> [!WARNING]
+> This project is under active development. It is not ready for production use, and APIs, behavior, and project structure may change without notice.
+
 A CLI tool that runs multiple AI coding agents in parallel using git worktrees.
 
 ## Overview
